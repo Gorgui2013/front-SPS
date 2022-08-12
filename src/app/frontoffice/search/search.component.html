@@ -38,7 +38,7 @@
 
 				<div class="row search-list">
 					<div *ngFor="let company of companies" class="col-sm-6 p-2" (click)="goToCompany(company)" (mouseover)="hoverCompany(company)" (mouseout)="hoverCompany(null)">
-						<div class="service position-relative" style="background-image: url(http://localhost:8081/{{company.profil | image}});">
+						<div class="service position-relative" style="background-image: url(https://back-sps.herokuapp.com/{{company.profil | image}});">
 							<div class="content-service position-absolute start-50 translate-middle-x">
 								<h5>{{company.name}}</h5>
 								<p>{{company.description}}</p>

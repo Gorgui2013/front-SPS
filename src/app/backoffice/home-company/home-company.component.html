@@ -2,9 +2,9 @@
 <div class="container-fluid details-company">
 	<!-- Cover -->
 	<div class="container-fluid">
-		<div class="position-relative border border-5" style="background-image: url(http://localhost:8081/{{company.cover | image}}); background-size: cover; height: 15em; border-radius: 10px;">
+		<div class="position-relative border border-5" style="background-image: url(https://back-sps.herokuapp.com/{{company.cover | image}}); background-size: cover; height: 15em; border-radius: 10px;">
 			<div class="position-absolute top-50 start-50 translate-middle-x">
-				<img src="http://localhost:8081/{{company.profil | image}}" width="150" height="150" class="rounded-circle" alt="">
+				<img src="https://back-sps.herokuapp.com/{{company.profil | image}}" width="150" height="150" class="rounded-circle" alt="">
 			</div>
 		</div>
 	</div>
@@ -50,7 +50,7 @@
 							</thead>
 							<tbody>
 								<tr *ngFor="let service of services">
-									<td><img src="http://localhost:8081/{{service.image | image}}" width="100" alt=""></td>
+									<td><img src="https://back-sps.herokuapp.com/{{service.image | image}}" width="100" alt=""></td>
 									<td>{{service.name}}</td>
 									<td style="width: 60%">
 										<p>{{service.description}}</p>

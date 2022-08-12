@@ -8,8 +8,8 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 })
 export class ApiService {
 
-  apiUrl = "http://localhost:8081/";
-  // apiUrl = "https://laboniang.com/api/";
+  // apiUrl = "http://localhost:8081/";
+  apiUrl = "https://back-sps.herokuapp.com/";
 
   constructor(private _http: HttpClient) {}
 
