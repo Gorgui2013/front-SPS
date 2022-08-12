@@ -1,0 +1,133 @@
+<div class="container-fluid">
+	<div class="col-lg-10 mx-auto p-4">
+		<h5>Parametrage profil</h5>
+		<hr>
+		<div class="row">
+			<div class="col-sm-3">
+				<div class="card card-body bg-light">
+					<h6>Options</h6>
+					<hr class="m-0">
+					<ul class="list-unstyled border-start border-secondary">
+						<li class="item-option m-2"><a (click)="checkOnEdit(false)" style="cursor: pointer;">Informations</a></li>
+						<li class="item-option m-2"><a (click)="checkOnEdit(true)" style="cursor: pointer;">Sécurité</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-sm-8">
+				<div class="col-lg-10 mx-auto">
+					<!-- profil -->
+					<div class="card card-body mb-3" *ngIf="authService.getRole() === 'COMPANY' && onEdit === false">
+						<form [formGroup]="profilForm" (ngSubmit)="saveProfil()">
+							<div class="form-group mb-3">
+							  <label for="profil">Image de Profil</label>
+							  <input type="file" class="form-control" id="profil" formControlName="profil" (change)="onFileSelect($event)">
+							</div>
+							<div align="right">
+								<button type="submit" class="btn btn-warning w-50">Enregistrer <i class="fas fa-save"></i></button>
+							</div>
+						</form>
+					</div>
+					<!-- Cover -->
+					<div class="card card-body mb-3" *ngIf="authService.getRole() === 'COMPANY' && onEdit === false">
+						<form>
+							<div class="form-group mb-3">
+							  <label for="cover">Prénom</label>
+							  <input type="file" class="form-control" id="cover" placeholder="Votre prénom">
+							</div>
+							<div align="right">
+								<button type="submit" class="btn btn-warning w-50">Enregistrer <i class="fas fa-save"></i></button>
+							</div>
+						</form>
+					</div>
+					<!-- informations -->
+					<div class="card card-body">
+						<!-- user form -->
+						<form [formGroup]="clientForm" (ngSubmit)="saveClient()" *ngIf="authService.getRole() === 'USER' && onEdit === false">
+							<div class="form-group mb-3">
+							  <label for="prenom">Prénom</label>
+							  <input type="text" class="form-control" id="prenom" formControlName="prenom" placeholder="Votre prénom">
+							</div>
+							<div class="form-group mb-3">
+							  <label for="nom">Nom</label>
+							  <input type="text" class="form-control" id="nom" formControlName="nom" placeholder="Votre nom">
+							</div>
+							<div class="form-group mb-3">
+								<label for="sexe">Sexe</label>
+								<input list="list-sexe" id="sexe" formControlName="sexe" class="form-control" name="sexe" placeholder="Sexe">
+								<datalist id="list-sexe">
+								    <option value="M">
+								    <option value="F">
+								</datalist>
+							</div>
+							<div class="form-group mb-3">
+							  <label for="phone">Téléphone</label>
+							  <input type="tel" class="form-control" id="phone" formControlName="phone" placeholder="Votre numéro de téléphone">
+							</div>
+							<div class="form-group mb-3">
+							  <label for="email">E-mail</label>
+							  <input type="email" class="form-control" id="email" formControlName="email" placeholder="exemple@exemple.com">
+							</div>
+							<div align="right">
+								<button type="submit" class="btn btn-warning w-50">Enregistrer <i class="fas fa-save"></i></button>
+							</div>
+						</form>
+						<!-- company form -->
+						<form [formGroup]="companyForm" (ngSubmit)="saveCompany()" *ngIf="authService.getRole() === 'COMPANY' && onEdit === false">
+							<div class="form-group mb-3">
+							  <label for="nom">Nom d'entreprise <span style="color: red">*</span></label>
+							  <input type="text" class="form-control" id="nom" formControlName="name" placeholder="Nom de l'entreprise">
+							</div>
+							<div class="form-group mb-3">
+							  <label for="secteur">Secteur <span style="color: red">*</span></label>
+							  <select  id="secteur" formControlName="secteur" class="form-select" placeholder="Votre secteur d'activité">
+							  	<option value="{{secteur._id}}" *ngFor="let secteur of secteurs">{{secteur.name}}</option>
+							  </select>
+							</div>
+							<div class="form-group mb-3">
+							  <label for="description">Description <span style="color: red">*</span> <span style="font-size: 14px">(1000 caractères)</span></label>
+							  <textarea rows="5" class="form-control" id="description" formControlName="description" placeholder="Donner une description de votre entreprise !"></textarea>
+							</div>
+							<div class="form-group mb-3">
+							  <label for="phone">Téléphone <span style="color: red">*</span></label>
+							  <input type="tel" class="form-control" id="phone" formControlName="phone" placeholder="+yy xxx xx xx">
+							</div>
+							<div class="form-group mb-3">
+							  <label for="email">E-mail <span style="color: red">*</span></label>
+							  <input type="email" class="form-control" id="email" formControlName="email" placeholder="exemple@exemple.com">
+							</div>
+							<div class="form-group mb-3">
+							  <label for="address">Adresse <span style="color: red">*</span></label>
+							  <input type="text" class="form-control" id="address" formControlName="address" placeholder="Exemple: Dakar">
+							</div>
+							<!-- <div class="form-group mb-3">
+							  <label for="adress" class="mb-2">Choisissez la localisation ({{markerX}}, {{markerY}})<span style="color: red">*</span></label>
+								<app-company-map (mark)="getMark($event)"></app-company-map>
+							</div> -->
+							<div align="right">
+								<button type="submit" class="btn btn-warning w-50">Enregistrer <i class="fas fa-save"></i></button>
+							</div>
+						</form>
+
+						<!-- security form -->
+						<form [formGroup]="userForm" (ngSubmit)="saveUser()" *ngIf="onEdit === true">
+							<div class="form-group mb-3">
+							  <p style="background-color: #eee; padding: 5px 15px 5px 15px; border-radius: 5px"><i class="fas fa-user"></i> : {{user.username}}</p>
+							</div>
+							<div class="form-group mb-3">
+							  <label for="password">Mot de passe</label>
+							  <input type="password" class="form-control" id="password" placeholder="Votre mot de passe">
+							</div>
+							<div class="form-group mb-3">
+							  <label for="passwordConfirm">Comfirmer le mot de passe</label>
+							  <input type="password" class="form-control" id="passwordConfirm" placeholder="Confirmer le mot de passe">
+							</div>
+							<div align="right">
+								<button type="submit" class="btn btn-warning w-50">Enregistrer <i class="fas fa-save"></i></button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,47 @@
+<nav class="navbar navbar-expand-lg navbar-light sticky-top bg-light">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="#"><img src="../assets/logo.png" width="90" alt=""></a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+				<li class="nav-item" style="margin-right: 10px;">
+					<a class="nav-link" [routerLink]="['/']"> <i class="fas fa-home"></i> Accueil <span class="sr-only">(current)</span></a>
+				</li>
+				<li class="nav-item" style="margin-right: 10px;">
+					<a class="nav-link" [routerLink]="['/search']"> <i class="fas fa-search"></i> Recherche</a>
+				</li>
+				<li class="nav-item" style="margin-right: 10px;" *ngIf="authService.isAuthIn() === true">
+					<a class="nav-link position-relative" [routerLink]="['compte/demandes']">
+						<i class="fas fa-receipt"></i> Demandes
+						<span class="position-absolute translate-middle badge rounded-pill bg-warning">0</span>
+					</a>
+				</li>
+			</ul>
+		        <span class="navbar-text dropdown" *ngIf="authService.isAuthIn() === true">
+		          <a class="btn btn-sm btn-outline-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+		            <i class="fas fa-user"></i> {{username}}
+		          </a>
+		          <ul class="dropdown-menu dropdown-menu-end">
+				    <li *ngIf="authService.getRole() === 'COMPANY'"><a class="dropdown-item" [routerLink]="authService.getUrl()"><i class="fas fa-home"></i> Compte</a></li>
+				    <li><a class="dropdown-item" [routerLink]="['compte/profil']"><i class="fas fa-user-edit"></i> Profil</a></li>
+				    <li><hr class="dropdown-divider"></li>
+				    <li><a class="dropdown-item" (click)="deconnexion()" style="cursor: pointer;"><i class="fas fa-sign-out"></i> Quitter</a></li>
+		          </ul>
+		        </span>
+			<span class="navbar-text" *ngIf="authService.isAuthIn() === false">
+				<a [routerLink]="['/signin']" class="btn btn-sm btn-outline-secondary" style="margin-right: 10px;"><i class="fas fa-sign-in"></i> Connexion</a>
+				<a [routerLink]="['/signup']" class="btn btn-sm btn-outline-secondary" style="margin-right: 10px;"><i class="fas fa-user-plus"></i> Inscription</a>
+			</span>
+		</div>
+	</div>
+</nav>
+
+<router-outlet></router-outlet>
+
+<div class="container-fluid" style="background-color: #111">
+	<div class="py-2 text-center text-white">
+		&copy; 2022 | SenProxiService
+	</div>
+</div>

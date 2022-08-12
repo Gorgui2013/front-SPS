@@ -1,0 +1,100 @@
+<div class="container-fluid">
+	<div class="col-lg-10 mx-auto p-4">
+		<div class="row">
+			<div class="col-sm">
+				<h5>Liste de vos demandes</h5>
+			</div>
+			<div class="col-sm" align="right">
+				<i class="fas fa-check-circle" style="color: #FFC107"></i> En attente
+				<i class="fas fa-check-circle" style="color: #33CF06"></i> Confirmées
+				<i class="fas fa-check-circle" style="color: #eee"></i> Archivées
+			</div>
+		</div>
+		<hr>
+		<div class="row">
+			<div class="col-sm-3">
+				<div class="card card-body bg-light">
+					<h6>Options</h6>
+					<hr class="m-0">
+					<ul class="list-unstyled border-start border-secondary" *ngIf="user.role === 'USER'">
+						<li class="item-option m-2" (click)="getDemandesClient(0)"><a style="cursor: pointer;">Tous</a></li>
+						<li class="item-option m-2" (click)="getDemandesClient(1)"><a style="cursor: pointer;">En attente</a></li>
+						<li class="item-option m-2" (click)="getDemandesClient(2)"><a style="cursor: pointer;">Confirmées</a></li>
+						<li class="item-option m-2" (click)="getDemandesClient(3)"><a style="cursor: pointer;">Archivées</a></li>
+					</ul>
+					<ul class="list-unstyled border-start border-secondary" *ngIf="user.role === 'COMPANY'">
+						<li class="item-option m-2" (click)="getDemandesCompany(0)"><a style="cursor: pointer;">Tous</a></li>
+						<li class="item-option m-2" (click)="getDemandesCompany(1)"><a style="cursor: pointer;">En attente</a></li>
+						<li class="item-option m-2" (click)="getDemandesCompany(2)"><a style="cursor: pointer;">Confirmées</a></li>
+						<li class="item-option m-2" (click)="getDemandesCompany(3)"><a style="cursor: pointer;">Archivées</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-sm-9">
+				<div class="alert alert-{{message.info}}" *ngIf="message">{{message.message}}</div>
+				<table class="table table-sm table-hover table-bordered">
+					<thead>
+						<th *ngIf="user.role === 'USER'">Entreprises</th>
+						<th *ngIf="user.role === 'COMPANY'">Demandeurs</th>
+						<th>Services</th>
+						<th>Objets</th>
+						<th>Etat</th>
+						<th><i class="fas fa-cogs"></i></th>
+					</thead>
+					<tbody>
+						<tr *ngFor="let demande of demandes">
+							<td *ngIf="user.role === 'USER'">{{demande.entreprise.name}}</td>
+							<td *ngIf="user.role === 'COMPANY'">{{demande.client.firstname}} {{demande.client.lastname}}</td>
+							<td>{{demande.service.name}}</td>
+							<td style="width: 50%">
+								<p>{{demande.object}}</p>
+							</td>
+							<td class="text-center"><i class="fas fa-check-circle" [ngStyle]="{'color' : getColorEtat(demande.etat)}"></i></td>
+							<td style="width: 12%" *ngIf="user.role === 'USER'">
+								<button class="btn btn-sm btn-primary m-1" *ngIf="demande.etat == 1" (click)="onDemandeModal(demande, template)"><i class="fas fa-edit"></i></button>
+								<button class="btn btn-sm btn-danger m-1" *ngIf="demande.etat != 2" (click)="deleteDemande(demande)"><i class="fas fa-trash"></i></button>
+							</td>
+							<td style="width: 12%" *ngIf="user.role === 'COMPANY'">
+								<button class="btn btn-sm btn-primary m-1" *ngIf="demande.etat == 1" (click)="valideDemande(demande)">Valider</button>
+								<button class="btn btn-sm btn-secondary m-1" *ngIf="demande.etat == 2" (click)="archiveDemande(demande)">Archiver</button>
+								<button class="btn btn-sm btn-danger m-1" *ngIf="demande.etat == 3" (click)="deleteDemande(demande)"><i class="fas fa-trash"></i></button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<ng-template #template>
+      <div class="modal-header btn-warning">
+        <h5 class="modal-title" id="demandeModalLabel">Edition demande de service : {{selectedDemande.service.name}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="offDemandeModal()"></button>
+      </div>
+      <div class="modal-body">
+		<form [formGroup]="demandeForm" (ngSubmit)="saveDemande()">
+			<div class="form-group mb-3">
+			  <label for="objet">Objet</label>
+			  <input type="text" class="form-control" id="objet" formControlName="object" [(ngModel)]="selectedDemande.object" placeholder="Objet de votre demande">
+			</div>
+			<div class="form-group mb-3">
+			  <label for="execDate">Date d'exécution souhaité</label>
+			  <input type="text" class="form-control" id="execDate" formControlName="dateExecution" [(ngModel)]="selectedDemande.dateExecution" onfocus="(this.type='date')" onblur="(this.type='text')" placeholder="Votre d'exécution souhaité">
+			</div>
+			<div class="form-group mb-3">
+			  <label for="message">Message</label>
+			  <textarea rows="5" class="form-control" id="message" formControlName="message" [(ngModel)]="selectedDemande.message" placeholder="Votre message"></textarea>
+			</div>
+			<div class="row">
+				<div class="col-sm text-center">
+					<button  data-bs-dismiss="modal" class="btn btn-warning w-100" (click)="offDemandeModal()"><i class="fas fa-close"></i> Annuler</button>
+				</div>
+				<div class="col-sm text-center">
+					<button type="submit" class="btn btn-warning w-100"><i class="fas fa-paper-plane"></i> Enregister</button>
+				</div>
+			</div>
+		</form>
+      </div>
+</ng-template>

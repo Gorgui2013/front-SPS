@@ -1,0 +1,54 @@
+<div class="search col-lg-12 mx-auto">
+		<div class="row">
+			<div class="col-sm-7 search-bar">
+				<div class="card bg-warning row m-3 p-2">
+					<h6> <i class="fas fa-filter"></i> Filtres :</h6>
+					<form [formGroup]="searchForm" (ngSubmit)="search()">
+						<div class="row">
+							<div class="col-sm-3">
+						        <input list="secteur" class="form-control form-control-sm" formControlName="secteur" placeholder="Secteur">
+						        <datalist id="secteur">
+						          <option value="" selected>
+						          <option value="{{secteur.name}}" *ngFor="let secteur of secteurs">
+						        </datalist>
+							  <!-- <select  id="secteur" formControlName="secteur" class="form-select form-select-sm" placeholder="Votre secteur d'activité">
+							  	<option value="" selected>Tous secteurs</option>
+							  	<option value="{{secteur.name}}" *ngFor="let secteur of secteurs">{{secteur.name}}</option>
+							  </select> -->
+							</div>
+							<div class="col-sm-3">
+						        <input list="service" class="form-control form-control-sm" formControlName="service" placeholder="Services">
+						        <datalist id="service">
+						          <option value="Transport">
+						          <option value="Transformation">
+						          <option value="Education">
+						          <option value="Commerce">
+						          <option value="Pêche">
+						        </datalist>
+							</div>
+							<div class="col-sm-3">
+								<input type="text" class="form-control form-control-sm" formControlName="entreprise" placeholder="Entreprise">
+							</div>
+							<div class="col-sm-3">
+								<button type="submit" class="btn btn-sm btn-secondary w-100"><i class="fas fa-search"></i> Rechercher</button>
+							</div>
+						</div>
+					</form>
+				</div>
+
+				<div class="row search-list">
+					<div *ngFor="let company of companies" class="col-sm-6 p-2" (click)="goToCompany(company)" (mouseover)="hoverCompany(company)" (mouseout)="hoverCompany(null)">
+						<div class="service position-relative" style="background-image: url(http://localhost:8081/{{company.profil | image}});">
+							<div class="content-service position-absolute start-50 translate-middle-x">
+								<h5>{{company.name}}</h5>
+								<p>{{company.description}}</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm" *ngIf="isOk">
+				<app-spsmap class="search-map" [company]="selectedCompany" [companies]="companies"></app-spsmap>
+			</div>
+		</div>
+	</div>

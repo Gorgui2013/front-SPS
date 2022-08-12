@@ -1,0 +1,185 @@
+<!-- signup page -->
+<div class="container-fluid" style="margin-top: 2%; margin-bottom: 5%">
+	<!-- contents page -->
+	<div class="col-lg-8 mx-auto my-auto">
+		<div class="text-center py-4">
+			<h3>Créer un compte !</h3>
+			<p>Les meilleurs fournisseurs de services à porté de main.</p>
+			<div class="alert alert-danger text-center" *ngIf="error" style="width: 60%">{{error}}</div>
+		</div>
+		<!-- template choise profil -->
+		<div *ngIf="step == 0" class="my-auto">
+			<div class="row">
+				<div class="col-sm">
+					<div class="card card-body choix" (click)="next('client')">
+						<div class="text-center">
+							<img src="../../../assets/images/illustrations/user.svg" height="200" width="200" class="rounded-circle mb-4" alt="">
+							<p class="choix-title">Client</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="card card-body choix" (click)="next('company')">
+						<div class="text-center">
+							<img src="../../../assets/images/illustrations/company.svg" height="200" width="200" class="rounded-circle mb-4" alt="">
+							<p class="choix-title">Entreprise</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- template first step 01 -->
+		<div *ngIf="step == 1">
+			<div *ngIf="profil === 'client'">
+				<div class="col-lg-8 mx-auto">
+					<div class="card card-body">
+						<h5 class="text-center mb-4"><span class="step"> - {{step}} - </span></h5>
+						<form [formGroup]="clientForm" (ngSubmit)="saveClient()">
+							<div class="form-group mb-3">
+							  <label for="prenom">Prénom <span style="color: red">*</span></label>
+							  <input type="text" class="form-control" id="prenom" formControlName="firstname" placeholder="Votre prénom">
+							</div>
+							<div class="form-group mb-3">
+							  <label for="nom">Nom <span style="color: red">*</span></label>
+							  <input type="text" class="form-control" id="nom" formControlName="lastname" placeholder="Votre nom">
+							</div>
+							<div class="form-group mb-3">
+								<label for="sexe">Sexe <span style="color: red">*</span></label>
+								<input list="list-sexe" id="sexe" formControlName="sexe" class="form-control" placeholder="Sexe">
+								<datalist id="list-sexe">
+								    <option value="M">
+								    <option value="F">
+								</datalist>
+							</div>
+							<div class="form-group mb-3">
+							  <label for="phone">Téléphone <span style="color: red">*</span></label>
+							  <input type="tel" class="form-control" id="phone" formControlName="phone" placeholder="Votre numéro de téléphone">
+							</div>
+							<div class="form-group mb-3">
+							  <label for="email">E-mail <span style="color: red">*</span></label>
+							  <input type="email" class="form-control" id="email" formControlName="email" placeholder="exemple@exemple.com">
+							</div>
+							<div class="row">
+								<div class="col-sm text-center">
+									<button (click)="previous()" class="btn btn-warning w-100"><i class="fas fa-long-arrow-alt-left"></i> Revenir</button>
+								</div>
+								<div class="col-sm text-center">
+									<button type="submit" class="btn btn-warning w-100" [disabled]="clientForm.invalid">Suivant <i class="fas fa-long-arrow-alt-right"></i></button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>	
+			</div>
+			<div *ngIf="profil === 'company'">
+				<div class="col-lg-8 mx-auto">
+					<div class="card card-body">
+						<h5 class="text-center mb-4"><span class="step">- {{step}} - </span></h5>
+						<form [formGroup]="companyForm" (ngSubmit)="savePoint()">
+							<div class="form-group mb-3">
+							  <label for="nom">Nom d'entreprise <span style="color: red">*</span></label>
+							  <input type="text" class="form-control" id="nom" formControlName="name" placeholder="Nom de l'entreprise">
+							</div>
+							<div class="form-group mb-3">
+							  <label for="secteur">Secteur <span style="color: red">*</span></label>
+							  <select  id="secteur" formControlName="secteur" class="form-select" placeholder="Votre secteur d'activité">
+							  	<option value="{{secteur._id}}" *ngFor="let secteur of secteurs">{{secteur.name}}</option>
+							  </select>
+							</div>
+							<div class="form-group mb-3">
+							  <label for="description">Description <span style="color: red">*</span> <span style="font-size: 14px">(1000 caractères)</span></label>
+							  <textarea rows="5" class="form-control" id="description" formControlName="description" placeholder="Donner une description de votre entreprise !"></textarea>
+							</div>
+							<div class="form-group mb-3">
+							  <label for="phone">Téléphone <span style="color: red">*</span></label>
+							  <input type="tel" class="form-control" id="phone" formControlName="phone" placeholder="+yy xxx xx xx">
+							</div>
+							<div class="form-group mb-3">
+							  <label for="email">E-mail <span style="color: red">*</span></label>
+							  <input type="email" class="form-control" id="email" formControlName="email" placeholder="exemple@exemple.com">
+							</div>
+							<div class="form-group mb-3">
+							  <label for="address">Adresse <span style="color: red">*</span></label>
+							  <input type="text" class="form-control" id="address" formControlName="address" placeholder="Exemple: Dakar">
+							</div>
+							<div class="form-group mb-3">
+							  <label for="adress" class="mb-2">Choisissez la localisation ({{markerX}}, {{markerY}})<span style="color: red">*</span></label>
+								<app-company-map (mark)="getMark($event)"></app-company-map>
+							</div>
+							<div class="row">
+								<div class="col-sm text-center">
+									<button (click)="previous()" class="btn btn-warning w-100"><i class="fas fa-long-arrow-alt-left"></i> Revenir</button>
+								</div>
+								<div class="col-sm text-center">
+									<button type="submit" class="btn btn-warning w-100" [disabled]="companyForm.invalid">Suivant <i class="fas fa-long-arrow-alt-right"></i></button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>	
+			</div>
+		</div>
+		<!-- template second and last step 02 -->
+		<div *ngIf="step == 2">
+			<div class="col-lg-8 mx-auto">
+				<div class="card card-body">
+					<h5 class="text-center mb-4"><span class="step"> - {{step}} - </span></h5>
+					<form [formGroup]="userForm" (ngSubmit)="saveUser()">
+						<div class="form-group mb-3">
+						  <label for="username">Nom d'utililsateur <span style="color: red">*</span></label>
+						  <input type="text" class="form-control" id="username" formControlName="username" placeholder="Votre d'utilisateur">
+						</div>
+						<div class="form-group mb-3">
+						  <label for="password">Mot de passe <span style="color: red">*</span></label>
+						  <input type="password" class="form-control" id="password" formControlName="password" placeholder="Votre mot de passe">
+						</div>
+						<div class="form-group mb-3">
+						  <label for="passwordConfirm">Comfirmer le mot de passe <span style="color: red">*</span></label>
+						  <input type="password" class="form-control" id="passwordConfirm" formControlName="passwordConfirm" placeholder="Confirmer le mot de passe">
+						</div>
+						<div class="row">
+							<div class="col-sm text-center">
+								<button (click)="previous()" class="btn btn-warning w-100"><i class="fas fa-long-arrow-alt-left"></i> Revenir</button>
+							</div>
+							<div class="col-sm text-center">
+								<button type="submit" class="btn btn-warning w-100" [disabled]="userForm.invalid">Enregistrer <i class="fas fa-save"></i></button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>	
+		</div>
+		<!-- template second and last step 03 -->
+		<div *ngIf="step == 3">
+			<div class="col-lg-8 mx-auto">
+				<div class="card card-body">
+					<h5 class="text-center mb-4"><span class="step"> - {{step}} - </span></h5>
+					<p>Un code de validation vous a été envoyé à l'adresse <strong>{{email}}</strong></p>
+					<form [formGroup]="validationForm" (ngSubmit)="validation()">
+						<div class="form-group mb-3">
+						  <input type="text" class="form-control" id="code" formControlName="code" placeholder="Code de validation">
+						</div>
+						<div align="right">
+							<button type="submit" class="btn btn-warning w-50" [disabled]="validationForm.invalid">Valider <i class="fas fa-save"></i></button>
+						</div>
+					</form>
+				</div>
+			</div>	
+		</div>
+		<!-- template second and last step 04 -->
+		<div *ngIf="step == 4">
+			<div class="col-lg-8 mx-auto">
+				<div class="alert alert-success text-center" *ngIf="success">{{success}}</div>
+				<div class="d-flex justify-content-center">
+					<a [routerLink]="['/signin']" class="link ml-2">Se connecter</a>
+				</div>
+			</div>	
+		</div>
+	</div>
+	<div class="py-4" *ngIf="step == 0">
+		<div class="d-flex justify-content-center">
+			Vous avez déjà un compte ? <a [routerLink]="['/signin']" class="link ml-2">Se connecter</a>
+		</div>
+	</div>
+</div>
