@@ -15,6 +15,7 @@
 			</div>
 			<div class="col-sm-8">
 				<div class="col-lg-10 mx-auto">
+				<div class="alert alert-{{message.info}}" *ngIf="message">{{message.message}}</div>
 					<!-- profil -->
 					<div class="card card-body mb-3" *ngIf="authService.getRole() === 'COMPANY' && onEdit === false">
 						<form [formGroup]="profilForm" (ngSubmit)="saveProfil()">

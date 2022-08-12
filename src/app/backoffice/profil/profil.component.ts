@@ -25,6 +25,7 @@ export class ProfilComponent implements OnInit {
 
   markerX: number;
   markerY: number;
+  message: any = null;
 
   constructor(
     public authService: AuthService, 
@@ -113,10 +114,10 @@ export class ProfilComponent implements OnInit {
     this.companyService.setProfil(this.info._id, formData)
     .subscribe(
       (data) => {
-        console.log('Ajout faite avec avec Succés.');
+        this.message = {info: 'success', message: 'Ajout réussit.'};
       },
       (error) => {
-        console.log('Upps ! Une erreur est survenu.');
+        this.message = {info: 'danger', message: 'Une erreur est survenue.'};
       });
   }
 

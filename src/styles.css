@@ -276,3 +276,8 @@ a.link:hover {
   border-radius: 0;
   /*padding: 2px;*/
 }
+
+.card-company:hover {
+	box-shadow: 2px 5px 7px #eee;
+	border: 1px solid #111;
+}

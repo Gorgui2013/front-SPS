@@ -9,7 +9,7 @@ export class CompanyService {
 
   constructor(private api: ApiService) {}
 
-  getCompanys() {
+  getCompanies() {
     return this.api.obtenir('entreprises');
   }
 

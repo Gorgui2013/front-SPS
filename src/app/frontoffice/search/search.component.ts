@@ -53,7 +53,6 @@ export class SearchComponent implements OnInit {
     .subscribe(
       (data) => {
         this.companies = this.orderedCompanies(data);
-        console.log (this.companies)
         this.isOk = true;
       },
       (error) => {

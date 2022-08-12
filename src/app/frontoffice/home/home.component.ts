@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from "@angular/router";
+import { CompanyService } from '../../cores/services/http/company.service';
 
 @Component({
   selector: 'app-home',
@@ -6,14 +8,29 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  public organisation = [{id: 1, image:"https://www.dynamique-mag.com/wp-content/uploads/e96669f09c136d4598a04830d9874ad5-780x405.jpg" ,name: "Services A", desp: "We are the best. we are the best",num : " 71818188118" },
-  {id: 2, image:"https://www.dynamique-mag.com/wp-content/uploads/e96669f09c136d4598a04830d9874ad5-780x405.jpg " ,name: "Services B", desp: "We are the best. we are the best", num : " 71818188118" },
-  {id: 3, image:"https://www.dynamique-mag.com/wp-content/uploads/e96669f09c136d4598a04830d9874ad5-780x405.jpg " ,name: "Services C", desp: "We are the best. we are the best",  num : " 71818188118" },
-  {id: 4, image:"https://www.dynamique-mag.com/wp-content/uploads/e96669f09c136d4598a04830d9874ad5-780x405.jpg " ,name: "Services D", desp: "We are the best. we are the best", num : " 71818188118" }]
-  constructor() { }
+
+  companies: any = [];
+  
+  constructor(private companyService: CompanyService, private route: Router) { }
 
   ngOnInit(): void {
-    
+    this.emitCompanies();
+  }
+
+  emitCompanies() {
+    this.companyService.getCompanies()
+    .subscribe(
+      (data) => {
+        this.companies = data;
+      },
+      (error) => {
+        console.log('Upps!!! Une erreur c\'est produit : '+error);
+      }
+      );
+  }
+
+  goToCompany(company) {
+    this.route.navigate(['/company', company._id]);
   }
 
 }

@@ -23,8 +23,14 @@ export class SpsmapComponent implements AfterViewInit  {
   }
 
   addMarkers() {
+    const companyIcon = L.icon({
+      iconUrl: '../../../assets/map-company.png',
+      iconSize: [30, 35],
+      iconAnchor: [13, 15],
+    });
+
     for(const i of this.companies) {
-      const m = L.marker([i.latitude, i.longitude]);
+      const m = L.marker([i.latitude, i.longitude], {icon: companyIcon});
       m.addTo(this.map);
       i.marker = m;
     }
@@ -40,7 +46,7 @@ export class SpsmapComponent implements AfterViewInit  {
       this.company.marker
       .bindTooltip("<strong style='padding: 20px; text-align: center'>"+changes['company'].currentValue.name+"</strong><hr style='margin: 0;'>"+changes['company'].currentValue.adresse, {
           direction: 'top',
-          offset: [-15, -10],
+          offset: [2, -10],
           ...this.afterTooltipClass
         }).openTooltip();
     }

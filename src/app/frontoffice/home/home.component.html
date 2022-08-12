@@ -2,33 +2,37 @@
 <div class="header">
 	<div class="desc-header">
 		<h1 class="font-bold">Votre Service le plus proche !</h1>
-		<h3 class="font-bold">Avec SenProxiService, retrouver les fournisseurs de services les proches de vous !</h3>
+		<h3 class="font-bold">Avec SenProxiService, retrouver les fournisseurs de services les plus proches de vous !</h3>
 
-		<div class="search">
-			<form action="">
-				<div class="row">
-					<div class="col-sm-3">
-            <input list="sexe" class="form-control form-control-sm" placeholder="Secteur">
-            <datalist id="sexe">
-              <option value="Transport">
-              <option value="Transformation">
-              <option value="Education">
-              <option value="Commerce">
-              <option value="Pêche">
-            </datalist>
+		<!-- <div class="search">
+				<form [formGroup]="searchForm" (ngSubmit)="search()">
+					<div class="row">
+						<div class="col-sm-3">
+					        <input list="secteur" class="form-control form-control-sm" formControlName="secteur" placeholder="Secteur">
+					        <datalist id="secteur">
+					          <option value="" selected>
+					          <option value="{{secteur.name}}" *ngFor="let secteur of secteurs">
+					        </datalist>
+						</div>
+						<div class="col-sm-3">
+					        <input list="service" class="form-control form-control-sm" formControlName="service" placeholder="Services">
+					        <datalist id="service">
+					          <option value="Transport">
+					          <option value="Transformation">
+					          <option value="Education">
+					          <option value="Commerce">
+					          <option value="Pêche">
+					        </datalist>
+						</div>
+						<div class="col-sm-3">
+							<input type="text" class="form-control form-control-sm" formControlName="entreprise" placeholder="Entreprise">
+						</div>
+						<div class="col-sm-3">
+							<button type="submit" class="btn btn-sm btn-secondary w-100"><i class="fas fa-search"></i> Rechercher</button>
+						</div>
 					</div>
-					<div class="col-sm-3">
-						<input type="text" class="form-control form-control-sm" placeholder="Service">
-					</div>
-					<div class="col-sm-3">
-						<input type="text" class="form-control form-control-sm" placeholder="Entreprise">
-					</div>
-					<div class="col-sm-3">
-						<button type="submit" class="btn btn-sm btn-secondary w-100"><i class="fas fa-search"></i> Rechercher</button>
-					</div>
-				</div>
-			</form>
-		</div>
+				</form>
+		</div> -->
 	</div>
 </div>
 
@@ -42,7 +46,8 @@
 			<div class="col-sm my-auto">
 				<h2>Vos services les plus proches</h2>
 				<h5 class="text-warning">Découvrez les meilleurs fournisseurs de services à proximité!</h5>
-				<p class="text-justify">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vero, tenetur quo mollitia repellendus obcaecati excepturi necessitatibus ipsum voluptatibus ad inventore placeat deserunt ea, vel, tempora! Ex nihil quos non unde.</p>
+				<p class="text-justify">SenProxiService met à votre disposition une base de données des entreprises et ouvriers de divers secteurs qui sont à proximité de vous.</p>
+				<p class="text-justify">Avec nous, la recherche et la demande de service deviens une plaisir.</p>
 			</div>
 		</div>
 	</div>
@@ -55,51 +60,12 @@
 			<p><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i></p>
 		</div>
 		<div class="row">
-			<div class="col-sm-3">
-				<div class="card">
-					<img src="../../../assets/images/header.jpg" class="card-img-top" alt="">
+			<div class="col-sm-3" *ngFor="let company of companies">
+				<div class="card card-company mb-3" (click)="goToCompany(company)" style="cursor: pointer;">
+					<img src="https://back-sps.herokuapp.com/{{company.profil}}" class="card-img-top" alt="">
 					<div class="card-body">
-						<h5 class="card-title">Service</h5>
-						<p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-						<div align="center">
-							<a [routerLink]="['/company']" class="btn btn-sm btn-outline-warning">Voir plus...</a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-3">
-				<div class="card">
-					<img src="../../../assets/images/header.jpg" class="card-img-top" alt="">
-					<div class="card-body">
-						<h5 class="card-title">Service</h5>
-						<p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-						<div align="center">
-							<a [routerLink]="['/company']" class="btn btn-sm btn-outline-warning">Voir plus...</a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-3">
-				<div class="card">
-					<img src="../../../assets/images/header.jpg" class="card-img-top" alt="">
-					<div class="card-body">
-						<h5 class="card-title">Service</h5>
-						<p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-						<div align="center">
-							<a [routerLink]="['/company']" class="btn btn-sm btn-outline-warning">Voir plus...</a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-3">
-				<div class="card">
-					<img src="../../../assets/images/header.jpg" class="card-img-top" alt="">
-					<div class="card-body">
-						<h5 class="card-title">Service</h5>
-						<p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-						<div align="center">
-							<a [routerLink]="['/company']" class="btn btn-sm btn-outline-warning">Voir plus...</a>
-						</div>
+						<h5 class="card-title" style="color: #ffc107">{{company.name}}</h5>
+						<p class="card-text">{{company.description | slice:0 : 100}} ...</p>
 					</div>
 				</div>
 			</div>
@@ -114,7 +80,7 @@
 			<div class="col-sm my-auto">
 				<h2>Entreprise ou Ouvrier</h2>
 				<h5 class="text-warning">Soyé plus proches des demandeurs</h5>
-				<p class="text-justify">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vero, tenetur quo mollitia repellendus obcaecati excepturi necessitatibus ipsum voluptatibus ad inventore placeat deserunt ea, vel, tempora! Ex nihil quos non unde.</p>
+				<p class="text-justify">Inscrivez vous pour gagner plus de visibilité. SenProxiService vous permet d'être plus proche de vos propects avec une espace de gestion de demandes de service.</p>
 			</div>
 			<div class="col-sm">
 				<img src="../../../assets/images/illustrations/place.svg" width="400" class="rounded" alt="">
@@ -128,25 +94,25 @@
 		<div class="row">
 			<div class="col-sm-4">
 				<h5>Inscrivez votre entreprise !</h5>
-				<p class="text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit, minus! Harum mollitia quis saepe minima accusamus laudantium, hic.</p>
+				<p class="text-justify">Devinez partenaire et profiter des meilleurs options de publicité.</p>
 			</div>
 			<div class="col-sm-8">
 				<div class="row">
 					<div class="col-sm text-center">
-						<img src="../../../assets/images/header.jpg" class="rounded-circle" width="100" height="100" alt="">
-						<h4 class="mt-2">Service</h4>
+						<i class="fas fa-address-book" style="font-size: 30px"></i>
+						<h6 class="mt-2">Annuaire client</h6>
 					</div>
 					<div class="col-sm text-center">
-						<img src="../../../assets/images/header.jpg" class="rounded-circle" width="100" height="100" alt="">
-						<h4 class="mt-2">Service</h4>
+						<i class="fas fa-calendar" style="font-size: 30px"></i>
+						<h6 class="mt-2">Calendrier d'éxécution</h6>
 					</div>
 					<div class="col-sm text-center">
-						<img src="../../../assets/images/header.jpg" class="rounded-circle" width="100" height="100" alt="">
-						<h4 class="mt-2">Service</h4>
+						<i class="fas fa-cogs" style="font-size: 30px"></i>
+						<h6 class="mt-2">A votre image</h6>
 					</div>
 					<div class="col-sm text-center">
-						<img src="../../../assets/images/header.jpg" class="rounded-circle" width="100" height="100" alt="">
-						<h4 class="mt-2">Service</h4>
+						<i class="fas fa-globe" style="font-size: 30px"></i>
+						<h6 class="mt-2">Vos services partout</h6>
 					</div>
 				</div>
 			</div>
