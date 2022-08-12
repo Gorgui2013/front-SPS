@@ -88,7 +88,7 @@
 }
 .header {
 	position: relative;
-	background-image: url('../../../assets/images/header.jpg');
+	background-image: url('../../../assets/cover.jpg');
 	background-size: cover;
 	background-repeat: no-repeat;
 	height: 100vh;
