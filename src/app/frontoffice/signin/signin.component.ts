@@ -31,6 +31,7 @@ export class SigninComponent implements OnInit {
       this.authService.signIn(this.formAuth.value)
       .subscribe(
         (data) => {
+          localStorage.clear();
           localStorage.setItem('ROLE', data.user.role);
           localStorage.setItem('token', data.token);
           localStorage.setItem('STATE', 'true');
